@@ -1,5 +1,5 @@
 <?php
-namespace App\Historias\Controladores;
+namespace App\historias\Controladores;
 
 use App\historias\Modelos\historia;
 use Exception;
@@ -13,7 +13,7 @@ class historiasController {
     
     function guardarhistoria($data){
         try {
-            $historia = new Historia();
+            $historia = new historia();
             $historia->titulo = $data['titulo'];
             $historia->descripcion = $data['descripcion'];
             $historia->responsable = $data['responsable'];
@@ -30,12 +30,12 @@ class historiasController {
     }
 
     public function mostarhistoria($id) {
-        $historia = Historia::find($id);
+        $historia = historia::find($id);
         return $historia ? $historia->toJson() : json_encode(['error' => 'No encontrada']);
     }
 
     public function modificarhistoria($id, $data) {
-        $historia = Historia::find($id);
+        $historia = historia::find($id);
         if (!$historia) return json_encode(['error' => 'No encontrada']);
         $historia->fill($data);
         $historia->save();
@@ -43,7 +43,7 @@ class historiasController {
     }
 
     public function eliminarhistoria($id) {
-        $historia = Historia::find($id);
+        $historia = historia::find($id);
         if (!$historia) return json_encode(['error' => 'No encontrada']);
         $historia->delete();
         return json_encode(['success' => 'Historia eliminada']);

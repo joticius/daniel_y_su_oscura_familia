@@ -4,7 +4,7 @@ namespace App\sprints\Controladores;
 use App\sprints\Modelos\sprint;
 use Exception;
 
-class SprintController {
+class sprintsController {
 
     // Crear un nuevo sprint
     public function crearsprint($data) {
