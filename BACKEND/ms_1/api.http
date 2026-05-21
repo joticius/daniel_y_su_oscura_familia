@@ -1,0 +1,72 @@
+#### SPRINTS #########################
+
+### consultar todos los sprints
+GET http://127.0.0.1:8000/sprints
+
+### consultar sprint
+GET http://127.0.0.1:8000/sprint/2
+
+### crear sprint
+POST http://127.0.0.1:8000/sprint
+Content-Type: application/json
+
+{
+    "nombre": "Sprint 1",
+    "fecha_inicio": "2026-05-21",
+    "fecha_fin": "2026-05-30"
+}
+
+### modificar sprint
+PUT http://127.0.0.1:8000/sprint/2
+Content-Type: application/json
+
+{
+    "nombre": "Sprint 1 actualizado",
+    "fecha_inicio": "2026-05-22",
+    "fecha_fin": "2026-06-01"
+}
+
+### borrar sprint
+DELETE http://127.0.0.1:8000/sprint/3
+
+
+#### HISTORIAS #########################
+
+### consultar todas las historias
+GET http://127.0.0.1:8000/historias
+
+### consultar historia
+GET http://127.0.0.1:8000/historia/2
+
+### crear historia
+POST http://127.0.0.1:8000/historia
+Content-Type: application/json
+
+{
+    "titulo": "Historia A",
+    "descripcion": "Primera historia de prueba",
+    "responsable": "Samu",
+    "estado": "nueva",
+    "puntos": 5,
+    "fecha_creacion": "2026-05-21",
+    "fecha_finalizacion": null,
+    "sprint_id": 1
+}
+
+### modificar historia
+PUT http://127.0.0.1:8000/historia/2
+Content-Type: application/json
+
+{
+    "titulo": "Historia A modificada",
+    "descripcion": "Descripción actualizada",
+    "responsable": "Samu",
+    "estado": "activa",
+    "puntos": 8,
+    "fecha_creacion": "2026-05-21",
+    "fecha_finalizacion": "2026-05-25",
+    "sprint_id": 1
+}
+
+### borrar historia
+DELETE http://127.0.0.1:8000/historia/3
