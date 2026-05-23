@@ -30,6 +30,10 @@
             </div>
         </div>
         <div class="topbar-right">
+            <button class="btn-ghost" id="btnNuevoSprint">
+                <i class="ti ti-flag-plus"></i>
+                Nuevo sprint
+            </button>
             <button class="btn-ghost" id="btnNuevaHistoria">
                 <i class="ti ti-plus"></i>
                 Nueva historia
@@ -293,6 +297,41 @@
         </div>
     </div>
  
+    <!-- MODAL: NUEVO SPRINT -->
+    <div class="modal-overlay" id="modalSprintOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <span class="modal-title">Nuevo sprint</span>
+                <button class="modal-close" id="btnCerrarModalSprint">
+                    <i class="ti ti-x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label" for="inputSprintNombre">Nombre del sprint</label>
+                    <input type="text" id="inputSprintNombre" class="form-input" placeholder="Sprint 1, Iteración 3...">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="inputSprintInicio">Fecha de inicio</label>
+                        <input type="date" id="inputSprintInicio" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="inputSprintFin">Fecha de fin</label>
+                        <input type="date" id="inputSprintFin" class="form-input">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-ghost" id="btnCancelarSprint">Cancelar</button>
+                <button class="btn-primary" id="btnGuardarSprint">
+                    <i class="ti ti-check"></i>
+                    Guardar sprint
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- JS: cargado en orden de dependencia -->
     <script src="Js/api.js"></script>
     <script src="Js/informe.js"></script>

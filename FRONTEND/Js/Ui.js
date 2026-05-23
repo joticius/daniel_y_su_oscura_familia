@@ -260,6 +260,19 @@ function actualizarPantallaInforme(metricas, responsables, detaImpedimentos, nom
     renderizarResumenResponsables(responsables);
 }
 
+// ── Modal de nuevo sprint ─────────────────────────────────
+
+function abrirModalSprint() {
+    document.getElementById('inputSprintNombre').value = '';
+    document.getElementById('inputSprintInicio').value = '';
+    document.getElementById('inputSprintFin').value    = '';
+    document.getElementById('modalSprintOverlay').classList.add('open');
+}
+
+function cerrarModalSprint() {
+    document.getElementById('modalSprintOverlay').classList.remove('open');
+}
+
 function renderizarResumenResponsables(responsables) {
     const lista = document.getElementById('responsableList');
     lista.innerHTML = '';

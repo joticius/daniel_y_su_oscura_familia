@@ -46,3 +46,14 @@ function deleteHistoria(id) {
         return res.json();
     });
 }
+
+function postSprint(payload) {
+    return fetch(API_BASE + '/sprint', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    }).then(function (res) {
+        if (!res.ok) throw new Error('Error al crear sprint');
+        return res.json();
+    });
+}

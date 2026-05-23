@@ -36,14 +36,9 @@ function cargarHistorias() {
 // ── Refresco de todas las vistas con los datos actuales ───
  
 function refrescarVistas() {
-    // Filtrar historias por el sprint activo seleccionado en el dropdown
-    const historiasFiltradas = sprintActivoId
-        ? historiasData.filter(function (h) { return Number(h.sprint_id) === Number(sprintActivoId); })
-        : historiasData;
-
-    const metricas         = calcularMetricas(historiasFiltradas);
-    const responsables     = calcularProgresoPorResponsable(historiasFiltradas);
-    const detaImpedimentos = obtenerDetaImpedimentos(historiasFiltradas);
+    const metricas         = calcularMetricas(historiasData);
+    const responsables     = calcularProgresoPorResponsable(historiasData);
+    const detaImpedimentos = obtenerDetaImpedimentos(historiasData);
  
     const sprintActivo = sprintData.find(function (s) { return s.id === sprintActivoId; });
     const nombreSprint = sprintActivo ? sprintActivo.nombre : '—';
@@ -51,10 +46,10 @@ function refrescarVistas() {
     // Dashboard
     actualizarMetricasDashboard(metricas, nombreSprint);
     renderizarProgresoResponsables(responsables);
-    renderizarUltimasHistorias(historiasFiltradas);
+    renderizarUltimasHistorias(historiasData);
  
     // Board — se pasan los callbacks de editar y eliminar
-    actualizarBoard(historiasFiltradas, abrirModalEdicion, confirmarEliminar);
+    actualizarBoard(historiasData, abrirModalEdicion, confirmarEliminar);
  
     // Informe
     actualizarPantallaInforme(metricas, responsables, detaImpedimentos, nombreSprint);
@@ -105,6 +100,48 @@ function guardarHistoria() {
         });
 }
  
+// ── Crear sprint ──────────────────────────────────────────
+
+function guardarSprint() {
+    var nombre = document.getElementById('inputSprintNombre').value.trim();
+    var inicio = document.getElementById('inputSprintInicio').value;
+    var fin    = document.getElementById('inputSprintFin').value;
+
+    if (!nombre) {
+        document.getElementById('inputSprintNombre').focus();
+        return;
+    }
+    if (!inicio) {
+        document.getElementById('inputSprintInicio').focus();
+        return;
+    }
+    if (!fin) {
+        document.getElementById('inputSprintFin').focus();
+        return;
+    }
+    if (fin < inicio) {
+        alert('La fecha de fin no puede ser anterior a la de inicio.');
+        document.getElementById('inputSprintFin').focus();
+        return;
+    }
+
+    var payload = {
+        nombre:       nombre,
+        fecha_inicio: inicio,
+        fecha_fin:    fin
+    };
+
+    postSprint(payload)
+        .then(function () {
+            cerrarModalSprint();
+            // Recargar sprints para que aparezca en el dropdown y en el modal de historias
+            cargarSprints();
+        })
+        .catch(function (err) {
+            console.error('Error creando sprint:', err);
+        });
+}
+
 // ── Editar historia ───────────────────────────────────────
  
 function abrirModalEdicion(historia) {
@@ -171,6 +208,18 @@ function initApp() {
         cerrarMenusAbiertos();
     });
  
+    // Modal — Nuevo sprint
+    document.getElementById('btnNuevoSprint').addEventListener('click', abrirModalSprint);
+    document.getElementById('btnCerrarModalSprint').addEventListener('click', cerrarModalSprint);
+    document.getElementById('btnCancelarSprint').addEventListener('click', cerrarModalSprint);
+    document.getElementById('btnGuardarSprint').addEventListener('click', guardarSprint);
+
+    document.getElementById('modalSprintOverlay').addEventListener('click', function (e) {
+        if (e.target === document.getElementById('modalSprintOverlay')) {
+            cerrarModalSprint();
+        }
+    });
+
     // Modal — Nueva historia (sin argumentos = modo creación)
     document.getElementById('btnNuevaHistoria').addEventListener('click', function () { abrirModal(); });
     document.getElementById('btnNuevaHistoria2').addEventListener('click', function () { abrirModal(); });
@@ -193,3 +242,4 @@ function initApp() {
 }
  
 document.addEventListener('DOMContentLoaded', initApp);
+ 
