@@ -4,18 +4,29 @@ let sprintActivoId = null; // ID del sprint seleccionado en el dropdown
  
 // ── Carga de datos ────────────────────────────────────────
  
-function cargarSprints() {
+function cargarSprints(activarUltimo) {
     getSprints()
         .then(function (sprints) {
-            sprintData     = sprints;
-            sprintActivoId = sprints.length > 0 ? sprints[0].id : null;
+            sprintData = sprints;
+
+            // Si se pide activar el último (sprint recién creado), usarlo
+            // Si ya había un sprint activo y sigue existiendo, mantenerlo
+            // Si no hay nada, activar el primero
+            if (activarUltimo && sprints.length > 0) {
+                sprintActivoId = sprints[sprints.length - 1].id;
+            } else if (!sprintActivoId || !sprints.find(function (s) { return s.id === sprintActivoId; })) {
+                sprintActivoId = sprints.length > 0 ? sprints[0].id : null;
+            }
  
-            const sprintActivo = sprints.find(function (s) { return s.id === sprintActivoId; });
-            const nombreActivo = sprintActivo ? sprintActivo.nombre : '—';
+            var sprintActivo = sprints.find(function (s) { return s.id === sprintActivoId; });
+            var nombreActivo = sprintActivo ? sprintActivo.nombre : '—';
  
             renderizarDropdownSprints(sprints, sprintActivoId);
             actualizarSprintLabel(nombreActivo);
             actualizarSprintDropdownModal(sprints);
+
+            // Refrescar vistas para que el filtro refleje el sprint activo
+            refrescarVistas();
         })
         .catch(function (err) {
             console.error('Error cargando sprints:', err);
@@ -36,20 +47,25 @@ function cargarHistorias() {
 // ── Refresco de todas las vistas con los datos actuales ───
  
 function refrescarVistas() {
-    const metricas         = calcularMetricas(historiasData);
-    const responsables     = calcularProgresoPorResponsable(historiasData);
-    const detaImpedimentos = obtenerDetaImpedimentos(historiasData);
+    // Filtrar historias por el sprint activo seleccionado en el dropdown
+    var historiasFiltradas = sprintActivoId
+        ? historiasData.filter(function (h) { return Number(h.sprint_id) === Number(sprintActivoId); })
+        : historiasData;
+
+    var metricas         = calcularMetricas(historiasFiltradas);
+    var responsables     = calcularProgresoPorResponsable(historiasFiltradas);
+    var detaImpedimentos = obtenerDetaImpedimentos(historiasFiltradas);
  
-    const sprintActivo = sprintData.find(function (s) { return s.id === sprintActivoId; });
-    const nombreSprint = sprintActivo ? sprintActivo.nombre : '—';
+    var sprintActivo = sprintData.find(function (s) { return s.id === sprintActivoId; });
+    var nombreSprint = sprintActivo ? sprintActivo.nombre : '—';
  
     // Dashboard
     actualizarMetricasDashboard(metricas, nombreSprint);
     renderizarProgresoResponsables(responsables);
-    renderizarUltimasHistorias(historiasData);
+    renderizarUltimasHistorias(historiasFiltradas);
  
     // Board — se pasan los callbacks de editar y eliminar
-    actualizarBoard(historiasData, abrirModalEdicion, confirmarEliminar);
+    actualizarBoard(historiasFiltradas, abrirModalEdicion, confirmarEliminar);
  
     // Informe
     actualizarPantallaInforme(metricas, responsables, detaImpedimentos, nombreSprint);
@@ -134,8 +150,9 @@ function guardarSprint() {
     postSprint(payload)
         .then(function () {
             cerrarModalSprint();
-            // Recargar sprints para que aparezca en el dropdown y en el modal de historias
-            cargarSprints();
+            // Recargar sprints activando el recién creado (último de la lista)
+            // Las historias ya están en memoria, solo se refresca el filtro
+            cargarSprints(true);
         })
         .catch(function (err) {
             console.error('Error creando sprint:', err);
@@ -236,10 +253,10 @@ function initApp() {
         exportarInforme(historiasData, sprintData, sprintActivoId);
     });
  
-    // Carga inicial
-    cargarSprints();
+    // Carga inicial — cargarHistorias primero para tener los datos,
+    // luego cargarSprints que al terminar llama refrescarVistas con el filtro listo
     cargarHistorias();
+    cargarSprints(false);
 }
  
 document.addEventListener('DOMContentLoaded', initApp);
- 
