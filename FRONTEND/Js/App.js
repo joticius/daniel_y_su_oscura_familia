@@ -36,9 +36,14 @@ function cargarHistorias() {
 // ── Refresco de todas las vistas con los datos actuales ───
  
 function refrescarVistas() {
-    const metricas         = calcularMetricas(historiasData);
-    const responsables     = calcularProgresoPorResponsable(historiasData);
-    const detaImpedimentos = obtenerDetaImpedimentos(historiasData);
+    // Filtrar historias por el sprint activo seleccionado en el dropdown
+    const historiasFiltradas = sprintActivoId
+        ? historiasData.filter(function (h) { return Number(h.sprint_id) === Number(sprintActivoId); })
+        : historiasData;
+
+    const metricas         = calcularMetricas(historiasFiltradas);
+    const responsables     = calcularProgresoPorResponsable(historiasFiltradas);
+    const detaImpedimentos = obtenerDetaImpedimentos(historiasFiltradas);
  
     const sprintActivo = sprintData.find(function (s) { return s.id === sprintActivoId; });
     const nombreSprint = sprintActivo ? sprintActivo.nombre : '—';
@@ -46,10 +51,10 @@ function refrescarVistas() {
     // Dashboard
     actualizarMetricasDashboard(metricas, nombreSprint);
     renderizarProgresoResponsables(responsables);
-    renderizarUltimasHistorias(historiasData);
+    renderizarUltimasHistorias(historiasFiltradas);
  
     // Board — se pasan los callbacks de editar y eliminar
-    actualizarBoard(historiasData, abrirModalEdicion, confirmarEliminar);
+    actualizarBoard(historiasFiltradas, abrirModalEdicion, confirmarEliminar);
  
     // Informe
     actualizarPantallaInforme(metricas, responsables, detaImpedimentos, nombreSprint);
@@ -188,4 +193,3 @@ function initApp() {
 }
  
 document.addEventListener('DOMContentLoaded', initApp);
- 
