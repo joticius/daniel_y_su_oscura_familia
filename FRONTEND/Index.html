@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="Css/Estilos.css">
 </head>
 <body>
-
+ 
     <!-- TOPBAR -->
     <header class="topbar">
         <div class="topbar-left">
@@ -24,13 +24,11 @@
             <span class="app-name">CamelloHub</span>
             <div class="sprint-selector" id="sprintSelector">
                 <i class="ti ti-calendar-event"></i>
-                <span id="sprintLabel">Sprint 2</span>
+                <!-- El sprint activo se escribe desde ui.js al cargar los sprints -->
+                <span id="sprintLabel">Cargando...</span>
                 <i class="ti ti-chevron-down"></i>
-                <ul class="sprint-dropdown" id="sprintDropdown">
-                    <li class="sprint-option" data-sprint="1">Sprint 1</li>
-                    <li class="sprint-option active" data-sprint="2">Sprint 2</li>
-                    <li class="sprint-option" data-sprint="3">Sprint 3</li>
-                </ul>
+                <!-- Las opciones de sprint se generan dinámicamente desde api.js -->
+                <ul class="sprint-dropdown" id="sprintDropdown"></ul>
             </div>
         </div>
         <div class="topbar-right">
@@ -44,7 +42,7 @@
             </button>
         </div>
     </header>
-
+ 
     <!-- TABS DE NAVEGACIÓN -->
     <nav class="tabs">
         <button class="tab active" data-tab="dashboard">
@@ -60,23 +58,25 @@
             Informe
         </button>
     </nav>
-
+ 
     <!-- CONTENIDO PRINCIPAL -->
     <main class="main-content">
-
+ 
         <!-- PANTALLA: DASHBOARD -->
         <section class="screen active" id="screen-dashboard">
-
+ 
             <div class="metrics-grid">
                 <div class="metric-card metric-purple">
                     <span class="metric-label">Total historias</span>
                     <span class="metric-value" id="totalStories">0</span>
-                    <span class="metric-sub">Sprint 2</span>
+                    <!-- El sprint activo se actualiza desde ui.js -->
+                    <span class="metric-sub" id="metaSprintActivo">—</span>
                 </div>
                 <div class="metric-card metric-green">
                     <span class="metric-label">Finalizadas</span>
                     <span class="metric-value" id="completedStories">0</span>
-                    <span class="metric-sub">44% del sprint</span>
+                    <!-- El porcentaje se calcula desde informe.js -->
+                    <span class="metric-sub" id="metaPorcentajeFinalizadas">—</span>
                 </div>
                 <div class="metric-card metric-amber">
                     <span class="metric-label">Impedimentos</span>
@@ -86,83 +86,33 @@
                 <div class="metric-card metric-blue">
                     <span class="metric-label">Pts completados</span>
                     <span class="metric-value" id="pointsCompleted">0</span>
-                    <span class="metric-sub">de 61 totales</span>
+                    <!-- El total de puntos se calcula desde informe.js -->
+                    <span class="metric-sub" id="metaTotalPuntos">—</span>
                 </div>
             </div>
-
+ 
             <div class="row-two">
-
+ 
                 <div class="card">
                     <div class="card-title">
                         <i class="ti ti-users"></i>
                         Progreso por responsable
                     </div>
-                    <div class="progress-list">
-                        <div class="progress-item">
-                            <div class="progress-meta">
-                                <span class="avatar av-ana">AN</span>
-                                <span class="progress-name">Ana</span>
-                                <span class="progress-pts">3/4 · 18 pts</span>
-                            </div>
-                            <div class="progress-bar-track">
-                                <div class="progress-bar-fill fill-green progress-75"></div>
-                            </div>
-                        </div>
-                        <div class="progress-item">
-                            <div class="progress-meta">
-                                <span class="avatar av-car">CA</span>
-                                <span class="progress-name">Carlos</span>
-                                <span class="progress-pts">1/3 · 7 pts</span>
-                            </div>
-                            <div class="progress-bar-track">
-                                <div class="progress-bar-fill fill-green progress-33"></div>
-                            </div>
-                        </div>
-                        <div class="progress-item">
-                            <div class="progress-meta">
-                                <span class="avatar av-lui">LU</span>
-                                <span class="progress-name">Luis</span>
-                                <span class="progress-pts">0/2 · 0 pts</span>
-                            </div>
-                            <div class="progress-bar-track">
-                                <div class="progress-bar-fill fill-amber progress-04"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Generado dinámicamente desde ui.js -->
+                    <div class="progress-list" id="progressList"></div>
                 </div>
-
+ 
                 <div class="card">
                     <div class="card-title">
                         <i class="ti ti-history"></i>
                         Últimas historias
                     </div>
-                    <div class="story-list" id="recentStories">
-                        <div class="story-row" data-tab-target="board">
-                            <div class="story-info">
-                                <span class="story-title">Login de usuario</span>
-                                <span class="story-meta">Ana · 3 pts</span>
-                            </div>
-                            <span class="badge badge-active">activa</span>
-                        </div>
-                        <div class="story-row" data-tab-target="board">
-                            <div class="story-info">
-                                <span class="story-title">Notificaciones push</span>
-                                <span class="story-meta">Luis · 13 pts</span>
-                            </div>
-                            <span class="badge badge-block">impedimento</span>
-                        </div>
-                        <div class="story-row" data-tab-target="board">
-                            <div class="story-info">
-                                <span class="story-title">Editar perfil</span>
-                                <span class="story-meta">Carlos · 5 pts</span>
-                            </div>
-                            <span class="badge badge-done">finalizada</span>
-                        </div>
-                    </div>
+                    <!-- Generado dinámicamente desde ui.js -->
+                    <div class="story-list" id="recentStories"></div>
                 </div>
-
+ 
             </div>
-
+ 
             <div class="action-row">
                 <button class="action-btn" id="btnNuevaHistoria2">
                     <i class="ti ti-plus"></i>
@@ -173,132 +123,120 @@
                     Ver informe del sprint
                 </button>
             </div>
-
+ 
         </section>
-
+ 
         <!-- PANTALLA: SPRINT BOARD (KANBAN) -->
         <section class="screen" id="screen-board">
-
+ 
             <div class="kanban-board">
-
+ 
                 <div class="kanban-col">
                     <div class="col-header">
                         <span class="col-title">Nueva</span>
                         <span class="col-count count-blue" id="countNew">0</span>
                     </div>
+                    <!-- Tarjetas generadas dinámicamente desde ui.js -->
                     <div class="kanban-column-body" id="newColumn"></div>
                     <button class="add-story-btn" id="btnAddStoryInline">
                         <i class="ti ti-plus"></i>
                         Agregar historia
                     </button>
                 </div>
-
+ 
                 <div class="kanban-col">
                     <div class="col-header">
                         <span class="col-title">Activa</span>
                         <span class="col-count count-purple" id="countActive">0</span>
                     </div>
+                    <!-- Tarjetas generadas dinámicamente desde ui.js -->
                     <div class="kanban-column-body" id="activeColumn"></div>
                 </div>
-
+ 
                 <div class="kanban-col">
                     <div class="col-header">
                         <span class="col-title">Finalizada</span>
                         <span class="col-count count-green" id="countDone">0</span>
                     </div>
+                    <!-- Tarjetas generadas dinámicamente desde ui.js -->
                     <div class="kanban-column-body" id="doneColumn"></div>
                 </div>
-
+ 
                 <div class="kanban-col">
                     <div class="col-header">
                         <span class="col-title">Impedimento</span>
                         <span class="col-count count-amber" id="countBlocked">0</span>
                     </div>
+                    <!-- Tarjetas generadas dinámicamente desde ui.js -->
                     <div class="kanban-column-body" id="blockedColumn"></div>
                 </div>
-
+ 
             </div>
-
+ 
         </section>
-
+ 
         <!-- PANTALLA: INFORME -->
         <section class="screen" id="screen-informe">
-
+ 
             <div class="informe-header">
                 <i class="ti ti-chart-bar"></i>
-                Informe Sprint 2
+                <!-- El sprint activo se actualiza desde ui.js -->
+                <span id="informeSprintTitulo">Informe</span>
             </div>
-
+ 
             <div class="report-grid">
                 <div class="report-card">
-                    <span class="report-num green-num">4</span>
+                    <!-- Calculado desde informe.js -->
+                    <span class="report-num green-num" id="reportFinalizadas">0</span>
                     <span class="report-label">Historias finalizadas</span>
-                    <span class="report-sub green-sub">44% del total del sprint</span>
+                    <!-- Porcentaje calculado desde informe.js -->
+                    <span class="report-sub green-sub" id="reportPorcentaje">—</span>
                 </div>
                 <div class="report-card">
-                    <span class="report-num purple-num">28</span>
+                    <!-- Calculado desde informe.js -->
+                    <span class="report-num purple-num" id="reportPuntosCompletados">0</span>
                     <span class="report-label">Puntos completados</span>
-                    <span class="report-sub purple-sub">de 61 puntos totales</span>
+                    <!-- Total de puntos calculado desde informe.js -->
+                    <span class="report-sub purple-sub" id="reportPuntosTotal">—</span>
                 </div>
                 <div class="report-card">
-                    <span class="report-num amber-num">1</span>
+                    <!-- Calculado desde informe.js -->
+                    <span class="report-num amber-num" id="reportImpedimentos">0</span>
                     <span class="report-label">Con impedimento</span>
-                    <span class="report-sub amber-sub">Notificaciones push · Luis</span>
+                    <!-- Detalle generado desde informe.js -->
+                    <span class="report-sub amber-sub" id="reportImpedimentoDetalle">—</span>
                 </div>
                 <div class="report-card">
-                    <span class="report-num blue-num">4</span>
+                    <!-- Calculado desde informe.js -->
+                    <span class="report-num blue-num" id="reportPendientes">0</span>
                     <span class="report-label">Historias pendientes</span>
                     <span class="report-sub blue-sub">nuevas + activas</span>
                 </div>
             </div>
-
+ 
             <div class="card">
                 <div class="card-title">
                     <i class="ti ti-users"></i>
                     Resumen por responsable
                 </div>
-                <div class="responsable-list">
-                    <div class="responsable-row">
-                        <span class="avatar av-ana lg">AN</span>
-                        <div class="responsable-info">
-                            <span class="responsable-name">Ana</span>
-                            <span class="responsable-detail">3 finalizadas · 1 activa · 28 pts acumulados</span>
-                        </div>
-                        <span class="badge badge-done">75%</span>
-                    </div>
-                    <div class="responsable-row">
-                        <span class="avatar av-car lg">CA</span>
-                        <div class="responsable-info">
-                            <span class="responsable-name">Carlos</span>
-                            <span class="responsable-detail">1 finalizada · 2 activas · 7 pts acumulados</span>
-                        </div>
-                        <span class="badge badge-active">33%</span>
-                    </div>
-                    <div class="responsable-row">
-                        <span class="avatar av-lui lg">LU</span>
-                        <div class="responsable-info">
-                            <span class="responsable-name">Luis</span>
-                            <span class="responsable-detail">0 finalizadas · 1 impedimento · 1 nueva</span>
-                        </div>
-                        <span class="badge badge-block">0%</span>
-                    </div>
-                </div>
+                <!-- Generado dinámicamente desde ui.js -->
+                <div class="responsable-list" id="responsableList"></div>
             </div>
-
+ 
             <button class="btn-ghost export-btn" id="btnExportarInforme">
                 <i class="ti ti-download"></i>
                 Exportar informe
             </button>
-
+ 
         </section>
-
+ 
     </main>
-
+ 
     <!-- MODAL: NUEVA HISTORIA -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <div class="modal-header">
-                <span class="modal-title">Nueva historia de usuario</span>
+                <span class="modal-title" id="modalTitulo">Nueva historia de usuario</span>
                 <button class="modal-close" id="btnCerrarModal">
                     <i class="ti ti-x"></i>
                 </button>
@@ -315,40 +253,34 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label" for="selectSprint">Sprint</label>
-                        <select id="selectSprint" class="form-input">
-                            <option>Sprint 1</option>
-                            <option selected>Sprint 2</option>
-                            <option>Sprint 3</option>
-                        </select>
+                        <!-- Las opciones se generan dinámicamente desde api.js -->
+                        <select id="selectSprint" class="form-input"></select>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="selectPuntos">Puntos</label>
                         <select id="selectPuntos" class="form-input">
-                            <option>1</option>
-                            <option>2</option>
-                            <option>3</option>
-                            <option>5</option>
-                            <option>8</option>
-                            <option>13</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="5">5</option>
+                            <option value="8">8</option>
+                            <option value="13">13</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
-                        <label class="form-label" for="selectResponsable">Responsable</label>
-                        <select id="selectResponsable" class="form-input">
-                            <option>Ana</option>
-                            <option>Carlos</option>
-                            <option>Luis</option>
-                        </select>
+                        <label class="form-label" for="inputResponsable">Responsable</label>
+                        <!-- Campo de texto libre para que cualquier nombre sea válido -->
+                        <input type="text" id="inputResponsable" class="form-input" placeholder="Nombre del responsable">
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="selectEstado">Estado</label>
                         <select id="selectEstado" class="form-input">
-                            <option>Nueva</option>
-                            <option>Activa</option>
-                            <option>Finalizada</option>
-                            <option>Impedimento</option>
+                            <option value="nueva">Nueva</option>
+                            <option value="activa">Activa</option>
+                            <option value="finalizada">Finalizada</option>
+                            <option value="impedimento">Impedimento</option>
                         </select>
                     </div>
                 </div>
@@ -362,7 +294,11 @@
             </div>
         </div>
     </div>
-
-    <script src="Js/App.js"></script>
+ 
+    <!-- JS: cargado en orden de dependencia -->
+    <script src="Js/api.js"></script>
+    <script src="Js/informe.js"></script>
+    <script src="Js/ui.js"></script>
+    <script src="Js/app.js"></script>
 </body>
 </html>
