@@ -12,7 +12,7 @@ Aplicación web para gestionar historias de usuario con un tablero Kanban integr
 
 1. Clona el repositorio en tu máquina local
 2. Navega a la carpeta del proyecto
-ejecite esto en cmd del proyecto: php -S 127.0.0.1:8000 -t BACKEND/ms_1/Public BACKEND/ms_1/Public/index.php
+ejecute esto en cmd del proyecto: php -S 127.0.0.1:8000 -t BACKEND/ms_1/Public BACKEND/ms_1/Public/index.php
 3. Ejecuta el script de inicio:
 
 
