@@ -14,22 +14,6 @@ Aplicación web para gestionar historias de usuario con un tablero Kanban integr
 2. Navega a la carpeta del proyecto
 3. Ejecuta el script de inicio:
 
-**Windows (PowerShell/CMD):**
-```bash
-start-app.bat
-```
-
-**Linux/Mac:**
-```bash
-php -S localhost:3000 -t FRONTEND &
-php -S localhost:9000 -t BACKEND/ms_1/Public BACKEND/ms_1/Public/router.php &
-```
-
-## Acceso
-
-Una vez ejecutado el script:
-- **Frontend:** http://localhost:3000
-- **Backend API:** http://localhost:9000
 
 ## Estructura del Proyecto
 
@@ -78,9 +62,3 @@ La base de datos se crea automáticamente en la primera solicitud. Los datos inc
 - Illuminate Database (Eloquent ORM)
 - MySQL
 
-## Notas de Desarrollo
-
-- Todo el CSS está centralizado en `FRONTEND/Css/Estilos.css`
-- Sin estilos inline (excluyen código limpio)
-- API RESTful con endpoints en `/BACKEND/ms_1/app/*/Presentacion/Routers/Endpoints.php`
-- CORS completamente habilitado para desarrollo local
